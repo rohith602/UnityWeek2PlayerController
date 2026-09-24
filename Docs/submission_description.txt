@@ -1,0 +1,7 @@
+For Week 2 I built a playable third person player controller in Unity 6000.4.7f1 on the Built In Render Pipeline, together with an obstacle course that isolates one physics behaviour per obstacle. The player is a dynamic Rigidbody with a CapsuleCollider rather than Unity's CharacterController component, because CharacterController bypasses the physics engine and cannot push or be pushed by other rigidbodies, which is exactly what the task asks for.
+
+Movement is written across five runtime C# scripts. The controller supports walking, sprinting, jumping with variable height, coyote time, a jump buffer, slope projection with a 45 degree limit, reduced air control, and crate pushing. Jump height is specified in metres and solved as the square root of 2gh, so the configured value is physically meaningful rather than an arbitrary impulse.
+
+The course contains ramps at 15, 30, 40 and 55 degrees, a staircase, a low bar, a wall, a gap to jump, crates of 1, 6 and 25 kg, and a moving platform that carries the player.
+
+Because a screenshot cannot prove that interactive behaviour works, I wrote a headless test suite that drives the controller with scripted input and steps the physics solver by hand, asserting on measured position and velocity. All eleven tests pass, and they caught two real bugs, including a jump that rose only 11 cm because the ground stick logic overwrote the upward velocity.
